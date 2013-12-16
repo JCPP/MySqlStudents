@@ -4,13 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Indice MySQL</title>
+<title>Index</title>
 </head>
 <body>
 <h1>MySQL Students</h1>
 <ul>
-	<li><a href="inserimentoStudent">Inserimento Studente</a></li>
-	<li><a href="#">Visualizza Lista Studenti</a></li>
+	<li><a href="add.jsp">Add Student</a></li>
+	<li><a href="delete.jsp">Delete Student</a></li>
+	<li><a href="#">Show Students' List</a></li>
 </ul>
 </body>
 </html>

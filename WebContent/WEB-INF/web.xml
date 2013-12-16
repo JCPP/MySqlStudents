@@ -37,22 +37,12 @@
   </context-param>
   <servlet>
     <description></description>
-    <display-name>Index</display-name>
-    <servlet-name>Index</servlet-name>
-    <servlet-class>com.github.jcpp.mysql.Index</servlet-class>
+    <display-name>StudentServlet</display-name>
+    <servlet-name>StudentServlet</servlet-name>
+    <servlet-class>com.github.jcpp.mysql.servlet.StudentServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Index</servlet-name>
-    <url-pattern>/index</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>InserimentoStudent</display-name>
-    <servlet-name>InserimentoStudent</servlet-name>
-    <servlet-class>com.github.jcpp.mysql.InserimentoStudent</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InserimentoStudent</servlet-name>
-    <url-pattern>/inserimentoStudent</url-pattern>
+    <servlet-name>StudentServlet</servlet-name>
+    <url-pattern>/studentController</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -4,40 +4,49 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
 
 public class Database {
 	private static Database database = null;
-	private final String DRIVERNAME = "com.mysql.jdbc.Driver";
+	private final String DRIVERNAME = "org.mysql.jdbc.Driver";
 	private final String CONNECTIONSTRING = "jdbc:mysql://localhost/university";
 	private final String DBUSER = "root";
 	private final String DBPASS = "";
+
+
 	private Database() {
 	}
+
 	public static Database getInstance() {
-		if (database == null)
+		if (database == null){
 			database = new Database();
+		}
 		return database;
 	}
 
 	public Connection getConnection() {
 		Connection con = null;
+		Context initCtx;
 		try {
-			Class.forName(DRIVERNAME);
-			con = DriverManager.getConnection(CONNECTIONSTRING, DBUSER, DBPASS);
-			System.out.println("##db## - Connessione acquisita.");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Errore sul driver: "+ e.getMessage());
+			initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			BasicDataSource ds = (BasicDataSource) envCtx.lookup("jdbc/university");
+			con = ds.getConnection();
+			System.out.println("##db## - 'Pooled Connection' acquisita.");
+		} catch (NamingException e1) {
+			e1.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Errore durante l'acquisizione della connessione."+
-					e.getMessage());
 		}
 		return con;
 	}
-	
-	
+
 	public void closeConnection(Connection con) {
+
 		try {
 			if (con != null) {
 				con.close();
@@ -48,6 +57,7 @@ public class Database {
 			System.out.println("Errore durante la chiusura della connessione."+
 					e.getMessage());
 		}
+
 	}
 
 }

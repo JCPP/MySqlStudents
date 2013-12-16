@@ -6,14 +6,17 @@ public class Student {
 
 	private String firstName;
 	private String lastName;
-	private int code;
 	private Date birthDate;
+	private int code;
 	
 	
-	public Student(String firstName, String lastName, int code, Date birthDate) { // Costruttore con i vari parametri
+	public Student() {
+	}
+	
+	
+	public Student(String firstName, String lastName, Date birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.code = code;
 		this.birthDate = birthDate;
 	}
 
@@ -49,23 +52,6 @@ public class Student {
 		this.lastName = lastName;
 	}
 
-
-	/**
-	 * @return the code
-	 */
-	public int getCode() {
-		return code;
-	}
-
-
-	/**
-	 * @param code the code to set
-	 */
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-
 	/**
 	 * @return the birthDate
 	 */
@@ -81,6 +67,21 @@ public class Student {
 		this.birthDate = birthDate;
 	}
 	
+	
+	/**
+	 * @return the code
+	 */
+	public int getCode() {
+		return code;
+	}
+
+
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(int code) {
+		this.code = code;
+	}
 	
 
 }
