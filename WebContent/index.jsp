@@ -11,6 +11,7 @@
 <ul>
 	<li><a href="add.jsp">Add Student</a></li>
 	<li><a href="delete.jsp">Delete Student</a></li>
+	<li><a href="search.jsp">Search Students</a></li>
 	<li><a href="#">Show Students' List</a></li>
 </ul>
 </body>

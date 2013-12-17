@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,55 +38,106 @@ public class StudentServlet extends HttpServlet {
 		String operation = request.getParameter("operation");
 		PrintWriter printWriter = response.getWriter();
 		StudentDAO studentDAO = new StudentDAO();
+		Student student;
+		
+		//Initizialize parameters
+		String code;
+		int intCode;
+		String name;
+		String surname;
 		
 		//Manage the operation
-		
-		//Add
-		if(operation.equals("add")){
-			//printWriter.println("Add operation");
-			
-			//Read parameters
-			String name = request.getParameter("name");
-			String surname = request.getParameter("surname");
-			Date date = null;
-			try {
-				date = new SimpleDateFormat("yyy-mm-dd").parse(request.getParameter("date"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			
-			//printWriter.println(request.getParameter("date"));
-			
-			Student student = new Student(name, surname, date);
-			
-			if(studentDAO.insertStudent(student)){
-				request.setAttribute("message", "Student added");
-			}
-			else{
-				request.setAttribute("message", "Student doesn't added");
-			}
-			
+		switch(operation){
+			case "add":
+				//printWriter.println("Add operation");
+				
+				//Read parameters
+				name = request.getParameter("name");
+				surname = request.getParameter("surname");
+				Date date = null;
+				try {
+					date = new SimpleDateFormat("yyy-mm-dd").parse(request.getParameter("date"));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
+				//printWriter.println(request.getParameter("date"));
+				
+				student = new Student(name, surname, date);
+				
+				if(studentDAO.insertStudent(student)){
+					request.setAttribute("message", "Student added");
+				}
+				else{
+					request.setAttribute("message", "Student doesn't added");
+				}
+				break;
+			case "delete":
+				//printWriter.println("Delete operation");
+				
+				//Read parameters
+				code = request.getParameter("code");
+				intCode = Integer.parseInt(code);
+				
+				if(studentDAO.deleteStudent(intCode)){
+					request.setAttribute("message", "Student deleted");
+				}
+				else{
+					request.setAttribute("message", "Student doesn't deleted");
+				}
+				break;
+			case "search":
+				//printWriter.println("Search operation");
+				
+				//Initializes
+				ArrayList<Student> students = new ArrayList<Student>();
+				
+				//Read parameters
+				code = request.getParameter("code");
+				name = request.getParameter("name");
+				
+				//Check if the parameters is null
+				if(code == null || code.isEmpty()){
+					if(name == null || name.isEmpty()){
+						
+					}
+					else{
+						students.addAll(studentDAO.getStudentsByName(name));
+					}
+				}
+				else{
+					intCode = Integer.parseInt(code);
+					student = studentDAO.getStudentByCode(intCode);
+					if(student != null){
+						students.add(student);
+					}
+				}
+				
+				
+				//Set the attributes
+				if(students.isEmpty()){
+					request.setAttribute("message", "No student found");
+				}
+				else{
+					request.setAttribute("message", "Students found");
+				}
+				
+				request.setAttribute("students", students);
+				
+				break;
+			default:
+				request.setAttribute("message", "Operation not supported");
+				break;
 		}
-		//Delete
-		else if(operation.equals("delete")){
-			//printWriter.println("Delete operation");
-			
-			//Read parameters
-			String code = request.getParameter("code");
-			int intCode = Integer.parseInt(code);
-			
-			if(studentDAO.deleteStudent(intCode)){
-				request.setAttribute("message", "Student deleted");
-			}
-			else{
-				request.setAttribute("message", "Student doesn't deleted");
-			}
-			
+		
+		if(operation.equals("search")){
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/search_result.jsp");
+			dispatcher.forward(request, response);
 		}
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/message.jsp");
-		dispatcher.forward(request, response);
-		
+		else{
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/message.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 
 }
