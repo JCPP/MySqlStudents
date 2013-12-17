@@ -7,6 +7,7 @@
 <title>Search Students</title>
 </head>
 <body>
+	<h1>Search Students</h1>
 	<form method="POST" action="studentController">
 		<table>
 			<tr>
